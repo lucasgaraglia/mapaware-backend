@@ -3,10 +3,11 @@ package com.mapaware.persistence.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.HashSet;
-import java.util.Set;
-
+import java.util.*;
 
 
 @Getter
@@ -16,7 +17,7 @@ import java.util.Set;
 @Builder
 @Entity
 @Table(name = "users")
-public class UserEntity {
+public class UserEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -26,19 +27,34 @@ public class UserEntity {
     private String email;
     private String password;
 
-    //    booleans necesarios para spring security
-    @Column(name = "is_enabled")
-    private boolean isEnabled;
-    @Column(name = "account_non_expired")
-    private boolean accountNonExpired;
-    @Column(name = "account_non_locked")
-    private boolean accountNonLocked;
-    @Column(name = "credentials_non_expired")
-    private boolean credentialsNonExpired;
+    @Enumerated(EnumType.STRING)
+    private RoleEnum role;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "user_roles",
-            joinColumns = @JoinColumn(name="user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<RoleEntity> roles = new HashSet<>();
+
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Set.of(new SimpleGrantedAuthority(role.name()));
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
 }
