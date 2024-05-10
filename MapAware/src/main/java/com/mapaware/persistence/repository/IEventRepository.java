@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface IEventRepository extends JpaRepository<EventEntity, Long> {
     Optional<EventEntity> findEventEntityById(long id);
+    EventEntity save(EventEntity event);
 }

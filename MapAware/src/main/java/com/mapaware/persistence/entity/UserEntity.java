@@ -26,11 +26,15 @@ public class UserEntity implements UserDetails {
     private String username;
     private String email;
     private String password;
+    private String name;
+    private String lastname;
+    private Date birthdate;
 
     @Enumerated(EnumType.STRING)
     private RoleEnum role;
 
-
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<EventEntity> events;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

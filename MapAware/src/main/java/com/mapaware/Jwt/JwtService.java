@@ -1,39 +1,52 @@
 package com.mapaware.Jwt;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.SignatureException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.security.Key;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
+import org.springframework.security.core.GrantedAuthority;
 
 @Service
 public class JwtService {
 
-    private static final String SECRET_KEY = "b/CKlCiuLODz0VojQ6ahAeV7BC0hPegehzP7iYmdd08=";
+    @Value("${jwt.secret}")
+    private String secretKey;
 
-    private String getToken(Map<String, Object> extraClaims, UserDetails user) {
+    @Value("${jwt.expiration}")
+    private Long expirationTime;
+
+    public String generateToken(UserDetails user) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("authorities", getRolesFromUser(user));
+
         return Jwts.builder()
-                .setClaims(extraClaims)
+                .setClaims(claims)
                 .setSubject(user.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis()+1000*60*24))
-                .signWith(getKey(), SignatureAlgorithm.HS256)
-                .compact(); //crea el obj y lo serializa
+                .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
+                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .compact();
     }
 
-    private Key getKey() {
-        byte[] keyBytes= Decoders.BASE64.decode(SECRET_KEY);
-        return Keys.hmacShaKeyFor(keyBytes);
+    public boolean validateToken(String token) {
+        try {
+            Jws<Claims> claimsJws = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+            return !claimsJws.getBody().getExpiration().before(new Date());
+        } catch (ExpiredJwtException | SignatureException e) {
+            return false;
+        }
     }
 
-    //    aca recibimos el UserDetails de spboot, no nuestra entity creada
-    public String generateToken(UserDetails user) {
-        return getToken(new HashMap<>(), user);
+    private Collection<String> getRolesFromUser(UserDetails user) {
+        return user.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
     }
 }
