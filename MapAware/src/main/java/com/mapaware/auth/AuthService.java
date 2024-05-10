@@ -37,6 +37,7 @@ public class AuthService {
                 .role(RoleEnum.USER)
                 .lastname(request.getLastname())
                 .name(request.getName())
+                .birthdate(request.getBirthdate())
                 .build();
 
         userRepository.save(user);

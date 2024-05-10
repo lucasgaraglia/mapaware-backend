@@ -7,6 +7,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -22,6 +24,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         final String token = getTokenFromRequest(request);
+        System.out.println(token);
 
         if (token == null) {
             filterChain.doFilter(request, response);
@@ -30,7 +33,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         try {
             if (jwtService.validateToken(token)) {
-                filterChain.doFilter(request, response);
+                UserDetails userDetails = jwtService.extractUserDetails(token);
+                if (userDetails != null && userDetails.getAuthorities().contains(new SimpleGrantedAuthority("USER"))) {
+                    filterChain.doFilter(request, response);
+                } else {
+                    response.setStatus(HttpStatus.FORBIDDEN.value());
+                    response.getWriter().write("Access denied");
+                }
             } else {
                 response.setStatus(HttpStatus.UNAUTHORIZED.value());
                 response.getWriter().write("Invalid token");
@@ -49,3 +58,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         return null;
     }
 }
+
+

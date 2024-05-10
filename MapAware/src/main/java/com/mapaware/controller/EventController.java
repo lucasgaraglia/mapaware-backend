@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/event")
 @RequiredArgsConstructor
-@PreAuthorize("permitAll()")
+//@PreAuthorize("permitAll()")
 public class EventController {
 
     private final EventService eventService;
