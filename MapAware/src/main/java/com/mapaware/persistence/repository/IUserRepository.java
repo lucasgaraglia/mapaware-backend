@@ -9,4 +9,5 @@ public interface IUserRepository extends JpaRepository<UserEntity, Long> {
     Optional<UserEntity> findUserEntityByUsername(String username);
 
     UserEntity save(UserEntity user);
+
 }

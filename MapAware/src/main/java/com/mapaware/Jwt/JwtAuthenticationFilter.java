@@ -1,5 +1,6 @@
 package com.mapaware.Jwt;
 
+import com.mapaware.persistence.entity.UserEntity;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,6 +15,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -32,9 +34,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         try {
+//            validateToken anda bien
             if (jwtService.validateToken(token)) {
                 UserDetails userDetails = jwtService.extractUserDetails(token);
-                if (userDetails != null && userDetails.getAuthorities().contains(new SimpleGrantedAuthority("USER"))) {
+                System.out.println(userDetails.toString());
+                System.out.println(userDetails.getAuthorities());
+                if (userDetails.getAuthorities().contains(new SimpleGrantedAuthority("USER"))) {
                     filterChain.doFilter(request, response);
                 } else {
                     response.setStatus(HttpStatus.FORBIDDEN.value());

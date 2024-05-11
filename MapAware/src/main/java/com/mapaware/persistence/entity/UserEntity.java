@@ -18,6 +18,7 @@ import java.util.*;
 @Builder
 @Entity
 @Table(name = "users")
+@ToString
 public class UserEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -38,8 +39,11 @@ public class UserEntity implements UserDetails {
     private Set<EventEntity> events;
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Set.of(new SimpleGrantedAuthority(role.name()));
+    public Collection<GrantedAuthority> getAuthorities() {
+        Set<GrantedAuthority> authorities = new HashSet<>();
+        authorities.add(new SimpleGrantedAuthority(role.name())); // Asegúrate de que el rol tenga el prefijo "ROLE_"
+        // Agrega más autoridades según sea necesario, por ejemplo, si un usuario tiene varios roles
+        return authorities;
     }
 
     @Override

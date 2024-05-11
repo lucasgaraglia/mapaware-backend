@@ -42,8 +42,6 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         CorsConfiguration corsConfig = new CorsConfiguration();
         corsConfig.addAllowedOrigin("*"); // Permitir acceso desde cualquier origen
-        corsConfig.addAllowedMethod("*"); // Permitir cualquier método HTTP
-        corsConfig.addAllowedHeader("*"); // Permitir cualquier header
 
         return httpSecurity
 
