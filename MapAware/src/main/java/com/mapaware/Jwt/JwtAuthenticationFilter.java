@@ -39,8 +39,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 UserDetails userDetails = jwtService.extractUserDetails(token);
                 System.out.println(userDetails.toString());
                 System.out.println(userDetails.getAuthorities());
+//                HASTA ACA ANDA BIEN
                 if (userDetails.getAuthorities().contains(new SimpleGrantedAuthority("USER"))) {
-                    filterChain.doFilter(request, response);
+                    System.out.println("ROLE USER DETECTED"); // hasta aca bien
+                    filterChain.doFilter(request, response); // excepcion
                 } else {
                     response.setStatus(HttpStatus.FORBIDDEN.value());
                     response.getWriter().write("Access denied");

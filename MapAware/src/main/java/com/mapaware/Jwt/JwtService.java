@@ -25,7 +25,7 @@ public class JwtService {
 
 
 //    @Value("${jwt.secret}")
-    private final String secretKey = "b/CKlCiuLODz0VojQ6ahAeV7BC0hPegehzP7iYmdd08=";
+    private final String secretKey = "pMe49rDiYgX+WaBeQSDNqikgekcqYZAQB1Vi3iIWDLnIoHVqyP1aBAt2rmh56aNXfNQAvsK4zdW4QGVBOY0sbOklnzjaXnuHgIBH8BdiHRxLw248+Lg/xlw7QWLM0VXqkWYmWv3mwd9+c6a4H00Zp62Q8ko29LadP10KyYo6/RVU6EMTDK8hKz06YIG01jN0cYhBdIA9PW1IWevQBAh17sQr/tfeCD/fsO3xposfu3I8B7QkQyoIdWWeSYozHROjHXSk6FtW4Ci/2t7HFLBh4Y8ez0fsSWrkdZ4t9Zge2sj5RWpjX8KDcq0XI9s0AoZeaahRW1ygE4jO8CRApR1Rbg==";
 
 //    @Value("${jwt.expiration}")
     private final int expirationTime = 86400000;
@@ -35,7 +35,7 @@ public class JwtService {
         claims.put("authorities", getRolesFromUser(user));
 
         return Jwts.builder()
-//                .setClaims(claims)
+                .setClaims(claims)
                 .setSubject(user.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
