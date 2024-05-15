@@ -1,6 +1,7 @@
 package com.mapaware.persistence.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -35,6 +36,7 @@ public class UserEntity implements UserDetails {
     @Enumerated(EnumType.STRING)
     private RoleEnum role;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<EventEntity> events;
 

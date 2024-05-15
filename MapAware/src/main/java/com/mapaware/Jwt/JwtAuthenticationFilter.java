@@ -8,7 +8,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -42,6 +44,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 //                HASTA ACA ANDA BIEN
                 if (userDetails.getAuthorities().contains(new SimpleGrantedAuthority("USER"))) {
                     System.out.println("ROLE USER DETECTED"); // hasta aca bien
+                    SecurityContextHolder.getContext().setAuthentication(
+                            new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities())
+                    );
                     filterChain.doFilter(request, response); // excepcion
                 } else {
                     response.setStatus(HttpStatus.FORBIDDEN.value());

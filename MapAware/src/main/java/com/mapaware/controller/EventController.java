@@ -29,8 +29,8 @@ public class EventController {
     @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<EventEntity> postEvent(@RequestBody EventEntity event){
         String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-        System.out.println(currentUsername);
-        UserEntity currentUser = userRepository.findUserEntityByUsername(currentUsername).orElseThrow(() -> new UsernameNotFoundException("User not found."));
+        System.out.println("CONTROLLER USER: "+currentUsername);
+        UserEntity currentUser = userRepository.findByUsername(currentUsername).orElseThrow(() -> new UsernameNotFoundException("User not found."));
         event.setUser(currentUser);
         eventService.postEvent(event);
         return ResponseEntity.ok(event);

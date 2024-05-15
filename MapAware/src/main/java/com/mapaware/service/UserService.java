@@ -12,7 +12,7 @@ public class UserService {
     private final IUserRepository userRepository;
 
     public UserEntity loadUserEntityByUsername(String username) {
-        return userRepository.findUserEntityByUsername(username).orElseThrow();
+        return userRepository.findByUsername(username).orElseThrow();
     }
 
 
