@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
+
 @RestController
 @RequestMapping("/event")
 @RequiredArgsConstructor
@@ -32,6 +34,7 @@ public class EventController {
         System.out.println("CONTROLLER USER: "+currentUsername);
         UserEntity currentUser = userRepository.findByUsername(currentUsername).orElseThrow(() -> new UsernameNotFoundException("User not found."));
         event.setUser(currentUser);
+        event.setDateTime(LocalDateTime.now());
         eventService.postEvent(event);
         return ResponseEntity.ok(event);
     }
