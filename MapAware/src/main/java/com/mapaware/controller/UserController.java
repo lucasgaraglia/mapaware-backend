@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
 
@@ -33,9 +34,24 @@ public class UserController {
         String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         System.out.println("userCONTROLLER USER: "+currentUsername);
         UserEntity currentUser = userRepository.findByUsername(currentUsername).orElseThrow(() -> new UsernameNotFoundException("User not found."));
-//        EventDTO eventDTO = EventDTO.builder()
-//                .category(currentUser.getEvents())
-//                .build();
+
+//        -------
+        Collection<EventDTO> eventDTOList = new ArrayList<EventDTO>();
+
+        for (EventEntity event : currentUser.getEvents()) {
+            EventDTO eventDTO = EventDTO.builder()
+                    .id(event.getId())
+                    .dateTime(event.getDateTime())
+                    .description(event.getDescription())
+                    .category(event.getCategory())
+                    .degree(event.getDegree())
+                    .latitude(event.getLatitude())
+                    .longitude(event.getLongitude())
+                    .build();
+            eventDTOList.add(eventDTO);
+        }
+
+
         UserDTO userDetails= UserDTO.builder()
                 .username(currentUser.getUsername())
                 .email(currentUser.getEmail())
@@ -43,7 +59,7 @@ public class UserController {
                 .lastname(currentUser.getLastname())
                 .birthdate(currentUser.getBirthdate())
                 .role(currentUser.getRole())
-                .events(currentUser.getEvents())
+                .events(eventDTOList)
                 .build();
         return ResponseEntity.ok(userDetails);
     }

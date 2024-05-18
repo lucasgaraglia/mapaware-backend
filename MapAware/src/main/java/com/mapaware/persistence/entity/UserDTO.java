@@ -28,7 +28,7 @@ public class UserDTO {
     @Enumerated(EnumType.STRING)
     private RoleEnum role;
 
-    private Set<EventEntity> events;
+    private Collection<EventDTO> events;
 
 
 }

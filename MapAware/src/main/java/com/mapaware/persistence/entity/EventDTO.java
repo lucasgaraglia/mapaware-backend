@@ -20,6 +20,7 @@ import java.util.*;
 @Builder
 public class EventDTO {
 
+    private Long id;
     private LocalDateTime dateTime;
     private String description;
     private String category;
