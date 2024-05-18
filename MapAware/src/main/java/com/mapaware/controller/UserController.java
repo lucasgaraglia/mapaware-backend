@@ -2,7 +2,9 @@ package com.mapaware.controller;
 
 import com.mapaware.auth.AuthResponse;
 import com.mapaware.auth.LoginRequest;
+import com.mapaware.persistence.entity.EventDTO;
 import com.mapaware.persistence.entity.EventEntity;
+import com.mapaware.persistence.entity.UserDTO;
 import com.mapaware.persistence.entity.UserEntity;
 import com.mapaware.persistence.repository.IUserRepository;
 import com.mapaware.service.EventService;
@@ -18,30 +20,32 @@ import java.util.Collection;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/event")
+@RequestMapping("/user")
 @RequiredArgsConstructor
 //@PreAuthorize("permitAll()")
-public class EventController {
+public class UserController {
 
-    private final EventService eventService;
     private final IUserRepository userRepository;
 
-    @PostMapping
+    @GetMapping
     @PreAuthorize("hasAuthority('USER')")
-    public ResponseEntity<EventEntity> postEvent(@RequestBody EventEntity event){
+    public ResponseEntity<UserDTO> getUserDetails(){
         String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-        System.out.println("CONTROLLER USER: "+currentUsername);
+        System.out.println("userCONTROLLER USER: "+currentUsername);
         UserEntity currentUser = userRepository.findByUsername(currentUsername).orElseThrow(() -> new UsernameNotFoundException("User not found."));
-        event.setUser(currentUser);
-        event.setDateTime(LocalDateTime.now());
-        eventService.postEvent(event);
-        return ResponseEntity.ok(event);
+//        EventDTO eventDTO = EventDTO.builder()
+//                .category(currentUser.getEvents())
+//                .build();
+        UserDTO userDetails= UserDTO.builder()
+                .username(currentUser.getUsername())
+                .email(currentUser.getEmail())
+                .name(currentUser.getName())
+                .lastname(currentUser.getLastname())
+                .birthdate(currentUser.getBirthdate())
+                .role(currentUser.getRole())
+                .events(currentUser.getEvents())
+                .build();
+        return ResponseEntity.ok(userDetails);
     }
 
-    @GetMapping("/all")
-    @PreAuthorize("hasAuthority('USER')")
-    public ResponseEntity<Collection<EventEntity>> getEvents(){
-        Collection<EventEntity> events = eventService.getEvents();
-        return ResponseEntity.ok(events);
-    }
 }

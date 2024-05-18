@@ -5,6 +5,9 @@ import com.mapaware.persistence.repository.IEventRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+import java.util.Set;
+
 @Service
 @RequiredArgsConstructor
 public class EventService {
@@ -15,5 +18,9 @@ public class EventService {
 
         eventRepository.save(event);
 
+    }
+
+    public Collection<EventEntity> getEvents(){
+        return eventRepository.findAll();
     }
 }
