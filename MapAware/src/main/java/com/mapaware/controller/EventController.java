@@ -44,4 +44,11 @@ public class EventController {
         Collection<EventEntity> events = eventService.getEvents();
         return ResponseEntity.ok(events);
     }
+
+    @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAuthority('USER')")
+    public ResponseEntity<Object> deleteEvent(@PathVariable Long id){
+        eventService.deleteEventById(id);
+        return ResponseEntity.ok("Event deleted.");
+    }
 }

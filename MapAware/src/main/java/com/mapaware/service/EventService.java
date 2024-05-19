@@ -23,4 +23,8 @@ public class EventService {
     public Collection<EventEntity> getEvents(){
         return eventRepository.findAll();
     }
+
+    public void deleteEventById(Long id){
+        eventRepository.deleteById(id);
+    }
 }
