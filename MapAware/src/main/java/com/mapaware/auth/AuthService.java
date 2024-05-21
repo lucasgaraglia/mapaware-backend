@@ -1,9 +1,12 @@
 package com.mapaware.auth;
 
 import com.mapaware.Jwt.JwtService;
-import com.mapaware.persistence.entity.RoleEnum;
-import com.mapaware.persistence.entity.UserEntity;
-import com.mapaware.persistence.repository.IUserRepository;
+import com.mapaware.model.dto.AuthResponse;
+import com.mapaware.model.dto.LoginRequest;
+import com.mapaware.model.dto.RegisterRequest;
+import com.mapaware.model.entity.RoleEnum;
+import com.mapaware.model.entity.UserEntity;
+import com.mapaware.repository.IUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

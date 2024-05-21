@@ -1,9 +1,9 @@
 package com.mapaware.controller;
 
-import com.mapaware.auth.AuthResponse;
+import com.mapaware.model.dto.AuthResponse;
 import com.mapaware.auth.AuthService;
-import com.mapaware.auth.LoginRequest;
-import com.mapaware.auth.RegisterRequest;
+import com.mapaware.model.dto.LoginRequest;
+import com.mapaware.model.dto.RegisterRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

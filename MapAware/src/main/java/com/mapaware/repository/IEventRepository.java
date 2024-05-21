@@ -1,6 +1,6 @@
-package com.mapaware.persistence.repository;
+package com.mapaware.repository;
 
-import com.mapaware.persistence.entity.EventEntity;
+import com.mapaware.model.entity.EventEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

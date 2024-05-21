@@ -1,6 +1,5 @@
 package com.mapaware.Jwt;
 
-import com.mapaware.persistence.entity.UserEntity;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,7 +16,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Optional;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -28,7 +26,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         final String token = getTokenFromRequest(request);
-        System.out.println(token);
+//        System.out.println(token);
 
         if (token == null) {
             filterChain.doFilter(request, response);
@@ -39,11 +37,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 //            validateToken anda bien
             if (jwtService.validateToken(token)) {
                 UserDetails userDetails = jwtService.extractUserDetails(token);
-                System.out.println(userDetails.toString());
-                System.out.println(userDetails.getAuthorities());
+//                System.out.println(userDetails.toString());
+//                System.out.println(userDetails.getAuthorities());
 //                HASTA ACA ANDA BIEN
                 if (userDetails.getAuthorities().contains(new SimpleGrantedAuthority("USER"))) {
-                    System.out.println("ROLE USER DETECTED"); // hasta aca bien
+//                    System.out.println("ROLE USER DETECTED"); // hasta aca bien
                     SecurityContextHolder.getContext().setAuthentication(
                             new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities())
                     );

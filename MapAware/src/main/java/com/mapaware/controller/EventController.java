@@ -1,10 +1,8 @@
 package com.mapaware.controller;
 
-import com.mapaware.auth.AuthResponse;
-import com.mapaware.auth.LoginRequest;
-import com.mapaware.persistence.entity.EventEntity;
-import com.mapaware.persistence.entity.UserEntity;
-import com.mapaware.persistence.repository.IUserRepository;
+import com.mapaware.model.entity.EventEntity;
+import com.mapaware.model.entity.UserEntity;
+import com.mapaware.repository.IUserRepository;
 import com.mapaware.service.EventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/event")
@@ -24,16 +21,11 @@ import java.util.Set;
 public class EventController {
 
     private final EventService eventService;
-    private final IUserRepository userRepository;
 
     @PostMapping
     @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<EventEntity> postEvent(@RequestBody EventEntity event){
-        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-        System.out.println("CONTROLLER USER: "+currentUsername);
-        UserEntity currentUser = userRepository.findByUsername(currentUsername).orElseThrow(() -> new UsernameNotFoundException("User not found."));
-        event.setUser(currentUser);
-        event.setDateTime(LocalDateTime.now());
+
         eventService.postEvent(event);
         return ResponseEntity.ok(event);
     }

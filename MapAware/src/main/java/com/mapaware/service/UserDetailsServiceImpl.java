@@ -1,7 +1,7 @@
 package com.mapaware.service;
 
-import com.mapaware.persistence.entity.UserEntity;
-import com.mapaware.persistence.repository.IUserRepository;
+import com.mapaware.model.entity.UserEntity;
+import com.mapaware.repository.IUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;

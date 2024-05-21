@@ -1,4 +1,4 @@
-package com.mapaware.auth;
+package com.mapaware.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

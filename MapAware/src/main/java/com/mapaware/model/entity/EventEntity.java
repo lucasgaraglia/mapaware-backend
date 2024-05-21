@@ -1,4 +1,4 @@
-package com.mapaware.persistence.entity;
+package com.mapaware.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

@@ -1,13 +1,11 @@
 package com.mapaware.Jwt;
 
-import com.mapaware.persistence.entity.UserEntity;
 import com.mapaware.service.UserDetailsServiceImpl;
 import com.mapaware.service.UserService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -62,9 +60,9 @@ public class JwtService {
     //-----------------------------------------
 
     public UserDetails extractUserDetails(String token) {
-        System.out.println("JWT SERVICE EXTRACT: "+token);
+//        System.out.println("JWT SERVICE EXTRACT: "+token);
         String username = getUsernameFromToken(token);
-        System.out.println("JWT SERVICE USERNAME:"+username);
+//        System.out.println("JWT SERVICE USERNAME:"+username);
         return userDetailsService.loadUserByUsername(username);
     }
 

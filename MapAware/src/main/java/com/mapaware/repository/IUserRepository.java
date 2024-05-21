@@ -1,6 +1,6 @@
-package com.mapaware.persistence.repository;
+package com.mapaware.repository;
 
-import com.mapaware.persistence.entity.UserEntity;
+import com.mapaware.model.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
