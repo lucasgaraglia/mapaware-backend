@@ -40,7 +40,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 //                System.out.println(userDetails.toString());
 //                System.out.println(userDetails.getAuthorities());
 //                HASTA ACA ANDA BIEN
-                if (userDetails.getAuthorities().contains(new SimpleGrantedAuthority("USER"))) {
+                if (userDetails.getAuthorities().contains(new SimpleGrantedAuthority("USER")) || userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ADMIN")) || userDetails.getAuthorities().contains(new SimpleGrantedAuthority("PRO"))) {
 //                    System.out.println("ROLE USER DETECTED"); // hasta aca bien
                     SecurityContextHolder.getContext().setAuthentication(
                             new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities())

@@ -25,7 +25,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN', 'PRO')")
     public ResponseEntity<UserDTO> getUserDetails(){
         UserDTO userDetails = userService.getUserDetails();
         return ResponseEntity.ok(userDetails);
