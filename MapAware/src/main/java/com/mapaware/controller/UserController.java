@@ -26,9 +26,17 @@ public class UserController {
 
     @GetMapping
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN', 'PRO')")
-    public ResponseEntity<UserDTO> getUserDetails(){
-        UserDTO userDetails = userService.getUserDetails();
+    public ResponseEntity<UserDTO> getCurrentUserDetails(){
+        UserDTO userDetails = userService.getCurrentUserDetails();
         return ResponseEntity.ok(userDetails);
     }
+
+    @GetMapping("/{username}")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN', 'PRO')")
+    public ResponseEntity<UserDTO> getUserDetailsByUsername(@PathVariable String username){
+        UserDTO userDetails = userService.getUserDetailsByUsername(username);
+        return ResponseEntity.ok(userDetails);
+    }
+
 
 }
