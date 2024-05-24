@@ -15,8 +15,10 @@ import org.springframework.stereotype.Service;
 
 import org.springframework.data.domain.Pageable;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -39,6 +41,7 @@ public class EventService {
     }
 
     public Collection<EventEntity> getEvents(){
+        refreshEvents();
         return eventRepository.findAll();
     }
 
@@ -47,6 +50,9 @@ public class EventService {
     }
 
     public Collection<EventDTO> getEventsPagination(int pag, int cant){
+
+        refreshEvents();
+
         Pageable pageable = (Pageable) PageRequest.of(pag, cant);
         Page<EventEntity> events = eventRepositoryPageable.findAll(pageable);
 
@@ -65,5 +71,21 @@ public class EventService {
             eventDTOList.add(eventDTO);
         }
         return eventDTOList;
+    }
+
+    public void refreshEvents(){
+        List<EventEntity> events = eventRepository.findAll();
+        for (EventEntity event : events) {
+            if(isMoreThanOneDayAgo(event.getDateTime())){
+                eventRepository.deleteById(event.getId());
+            }
+        }
+
+    }
+
+
+    public static boolean isMoreThanOneDayAgo(LocalDateTime dateTime) {
+        LocalDateTime oneDayAgo = LocalDateTime.now().minus(1, ChronoUnit.DAYS);
+        return dateTime.isBefore(oneDayAgo);
     }
 }
