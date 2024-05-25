@@ -29,15 +29,12 @@ public class EventService {
     private final IEventRepositoryPageable eventRepositoryPageable;
 
     public void postEvent(EventEntity event){
-
         String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-//        System.out.println("CONTROLLER USER: "+currentUsername);
-        UserEntity currentUser = userRepository.findByUsername(currentUsername).orElseThrow(() -> new UsernameNotFoundException("User not found."));
+        UserEntity currentUser = userRepository.findByUsername(currentUsername)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found."));
         event.setUser(currentUser);
         event.setDateTime(LocalDateTime.now());
-
         eventRepository.save(event);
-
     }
 
     public Collection<EventEntity> getEvents(){
@@ -50,13 +47,12 @@ public class EventService {
     }
 
     public Collection<EventDTO> getEventsPagination(int pag, int cant){
-
         refreshEvents();
 
-        Pageable pageable = (Pageable) PageRequest.of(pag, cant);
+        Pageable pageable = PageRequest.of(pag, cant);
         Page<EventEntity> events = eventRepositoryPageable.findAll(pageable);
 
-        Collection<EventDTO> eventDTOList = new ArrayList<EventDTO>();
+        Collection<EventDTO> eventDTOList = new ArrayList<>();
 
         for (EventEntity event : events) {
             EventDTO eventDTO = EventDTO.builder()
@@ -67,6 +63,7 @@ public class EventService {
                     .degree(event.getDegree())
                     .latitude(event.getLatitude())
                     .longitude(event.getLongitude())
+                    .username(event.getUser().getUsername())
                     .build();
             eventDTOList.add(eventDTO);
         }
@@ -80,9 +77,7 @@ public class EventService {
                 eventRepository.deleteById(event.getId());
             }
         }
-
     }
-
 
     public static boolean isMoreThanOneDayAgo(LocalDateTime dateTime) {
         LocalDateTime oneDayAgo = LocalDateTime.now().minus(1, ChronoUnit.DAYS);

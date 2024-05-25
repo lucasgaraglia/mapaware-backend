@@ -20,5 +20,5 @@ public class EventDTO {
     private int degree;
     private String latitude;
     private String longitude;
-
+    private String username;
 }
