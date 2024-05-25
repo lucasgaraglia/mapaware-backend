@@ -6,7 +6,9 @@ import com.mapaware.model.entity.EventEntity;
 import com.mapaware.model.entity.UserEntity;
 import com.mapaware.repository.IUserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,7 @@ import java.util.Collection;
 public class UserService {
 
     private final IUserRepository userRepository;
+    private final UserDetailsServiceImpl userDetailsService;
 
     public UserEntity loadUserEntityByUsername(String username) {
         return userRepository.findByUsername(username).orElseThrow();
@@ -84,5 +87,17 @@ public class UserService {
                 .role(currentUser.getRole())
                 .events(eventDTOList)
                 .build();
+    }
+
+    public boolean validateUser(String username, String role) {
+
+        UserDetails user = userDetailsService.loadUserByUsername(username);
+        System.out.println(user.getAuthorities().contains(new SimpleGrantedAuthority(role)));
+
+        if (user.getAuthorities().contains(new SimpleGrantedAuthority(role))) {
+            return true;
+        }
+        return false;
+
     }
 }

@@ -31,11 +31,20 @@ public class UserController {
         return ResponseEntity.ok(userDetails);
     }
 
-    @GetMapping("/{username}")
+    @GetMapping("/details/{username}")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN', 'PRO')")
     public ResponseEntity<UserDTO> getUserDetailsByUsername(@PathVariable String username){
         UserDTO userDetails = userService.getUserDetailsByUsername(username);
         return ResponseEntity.ok(userDetails);
+    }
+
+    @GetMapping("/validate")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN', 'PRO')")
+    public ResponseEntity<Object> validateUser(@RequestParam(name = "user") String username,
+                                               @RequestParam(name = "role") String role) {
+        boolean isValid = userService.validateUser(username, role.toUpperCase());
+        return ResponseEntity.ok(isValid);
+
     }
 
 
