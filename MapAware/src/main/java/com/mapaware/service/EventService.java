@@ -4,7 +4,6 @@ import com.mapaware.model.dto.EventDTO;
 import com.mapaware.model.entity.EventEntity;
 import com.mapaware.model.entity.UserEntity;
 import com.mapaware.repository.IEventRepository;
-import com.mapaware.repository.IEventRepositoryPageable;
 import com.mapaware.repository.IUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,7 +25,7 @@ public class EventService {
 
     private final IEventRepository eventRepository;
     private final IUserRepository userRepository;
-    private final IEventRepositoryPageable eventRepositoryPageable;
+//    private final IEventRepositoryPageable eventRepositoryPageable;
 
     public void postEvent(EventEntity event){
         String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -50,7 +49,7 @@ public class EventService {
         refreshEvents();
 
         Pageable pageable = PageRequest.of(pag, cant);
-        Page<EventEntity> events = eventRepositoryPageable.findAll(pageable);
+        Page<EventEntity> events = eventRepository.findAll(pageable);
 
         Collection<EventDTO> eventDTOList = new ArrayList<>();
 

@@ -1,7 +1,7 @@
 package com.mapaware.controller;
 
 import com.mapaware.model.dto.AuthResponse;
-import com.mapaware.auth.AuthService;
+import com.mapaware.service.AuthService;
 import com.mapaware.model.dto.LoginRequest;
 import com.mapaware.model.dto.RegisterRequest;
 import lombok.RequiredArgsConstructor;

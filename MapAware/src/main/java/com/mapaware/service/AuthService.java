@@ -1,4 +1,4 @@
-package com.mapaware.auth;
+package com.mapaware.service;
 
 import com.mapaware.Jwt.JwtService;
 import com.mapaware.model.dto.AuthResponse;
