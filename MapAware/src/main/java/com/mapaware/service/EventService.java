@@ -83,7 +83,7 @@ public class EventService {
         return dateTime.isBefore(oneDayAgo);
     }
 
-    public Collection<EventEntity> getEventsFiltered(String category) {
-        return eventRepository.findEventEntityByCategory(category);
+    public Collection<EventEntity> getEventsFiltered(List<String> categories) {
+        return eventRepository.findEventEntitiesByCategoryIn(categories);
     }
 }

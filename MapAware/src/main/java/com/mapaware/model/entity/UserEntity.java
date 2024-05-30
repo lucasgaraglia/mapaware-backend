@@ -43,8 +43,7 @@ public class UserEntity implements UserDetails {
     @Override
     public Collection<GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> authorities = new HashSet<>();
-        authorities.add(new SimpleGrantedAuthority(role.name())); // Asegúrate de que el rol tenga el prefijo "ROLE_"
-        // Agrega más autoridades según sea necesario, por ejemplo, si un usuario tiene varios roles
+        authorities.add(new SimpleGrantedAuthority(role.name()));
         return authorities;
     }
 

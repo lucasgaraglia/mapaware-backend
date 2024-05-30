@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.util.Collection;
+import java.util.List;
 
 @RestController
 @RequestMapping("/event")
@@ -35,8 +36,8 @@ public class EventController {
 
     @GetMapping("/filtered")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN', 'PRO')")
-    public ResponseEntity<Collection<EventEntity>> getEventsFiltered(@RequestParam(name = "cat") String category){
-        Collection<EventEntity> events = eventService.getEventsFiltered(category);
+    public ResponseEntity<Collection<EventEntity>> getEventsFiltered(@RequestParam(name = "cat") List<String> categories){
+        Collection<EventEntity> events = eventService.getEventsFiltered(categories);
         return ResponseEntity.ok(events);
     }
 
