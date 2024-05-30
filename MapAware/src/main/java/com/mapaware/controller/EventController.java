@@ -33,6 +33,14 @@ public class EventController {
         return ResponseEntity.ok(events);
     }
 
+    @GetMapping("/filtered")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN', 'PRO')")
+    public ResponseEntity<Collection<EventEntity>> getEventsFiltered(@RequestParam(name = "cat") String category){
+        Collection<EventEntity> events = eventService.getEventsFiltered(category);
+        return ResponseEntity.ok(events);
+    }
+
+
     @DeleteMapping("/delete/{id}")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN', 'PRO')")
     public ResponseEntity<Object> deleteEvent(@PathVariable Long id){

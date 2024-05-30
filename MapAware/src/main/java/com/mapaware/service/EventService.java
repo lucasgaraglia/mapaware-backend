@@ -82,4 +82,8 @@ public class EventService {
         LocalDateTime oneDayAgo = LocalDateTime.now().minus(1, ChronoUnit.DAYS);
         return dateTime.isBefore(oneDayAgo);
     }
+
+    public Collection<EventEntity> getEventsFiltered(String category) {
+        return eventRepository.findEventEntityByCategory(category);
+    }
 }
