@@ -5,13 +5,16 @@ import com.mapaware.model.dto.UserDTO;
 import com.mapaware.model.entity.EventEntity;
 import com.mapaware.model.entity.UserEntity;
 import com.mapaware.repository.IUserRepository;
+import com.mapaware.utils.ImageUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -58,6 +61,7 @@ public class UserService {
                 .birthdate(currentUser.getBirthdate())
                 .role(currentUser.getRole())
                 .events(eventDTOList)
+                .profileImage(ImageUtils.decompressImage(currentUser.getProfileImage()))
                 .build();
     }
 
@@ -90,6 +94,7 @@ public class UserService {
                 .birthdate(currentUser.getBirthdate())
                 .role(currentUser.getRole())
                 .events(eventDTOList)
+                .profileImage(ImageUtils.decompressImage(currentUser.getProfileImage()))
                 .build();
     }
 
@@ -104,4 +109,11 @@ public class UserService {
         return false;
 
     }
+
+    public void saveUserProfileImage(Long userId, MultipartFile file) throws IOException {
+        UserEntity user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        user.setProfileImage(ImageUtils.compressImage(file.getBytes()) );
+        userRepository.save(user);
+    }
+
 }

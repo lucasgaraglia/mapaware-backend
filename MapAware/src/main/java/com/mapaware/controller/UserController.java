@@ -7,12 +7,15 @@ import com.mapaware.model.entity.UserEntity;
 import com.mapaware.repository.IUserRepository;
 import com.mapaware.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -44,6 +47,16 @@ public class UserController {
                                                @RequestParam(name = "role") String role) {
         boolean isValid = userService.validateUser(username, role.toUpperCase());
         return ResponseEntity.ok(isValid);
+
+    }
+
+    @PutMapping("/image/{id}")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN', 'PRO')")
+    public ResponseEntity<String> uploadProfileImage(@RequestParam("file") MultipartFile file, @PathVariable Long id) throws IOException {
+
+            userService.saveUserProfileImage(id, file);
+            return ResponseEntity.ok("File uploaded successfully");
+
 
     }
 
