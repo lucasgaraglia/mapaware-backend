@@ -84,6 +84,7 @@ public class EventService {
     }
 
     public Collection<EventEntity> getEventsFiltered(List<String> categories) {
+        refreshEvents();
         return eventRepository.findEventEntitiesByCategoryIn(categories);
     }
 }

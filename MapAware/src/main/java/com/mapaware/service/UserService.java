@@ -21,12 +21,15 @@ public class UserService {
 
     private final IUserRepository userRepository;
     private final UserDetailsServiceImpl userDetailsService;
+    private final EventService eventService;
 
     public UserEntity loadUserEntityByUsername(String username) {
         return userRepository.findByUsername(username).orElseThrow();
     }
 
     public UserDTO getCurrentUserDetails() {
+
+        eventService.refreshEvents();
         String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
 //        System.out.println("userSERVICE USER: "+currentUsername);
         UserEntity currentUser = userRepository.findByUsername(currentUsername).orElseThrow(() -> new UsernameNotFoundException("User not found."));
@@ -60,6 +63,7 @@ public class UserService {
 
 
     public UserDTO getUserDetailsByUsername(String username) {
+        eventService.refreshEvents();
         UserEntity currentUser = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found."));
 
         Collection<EventDTO> eventDTOList = new ArrayList<EventDTO>();
