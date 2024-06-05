@@ -25,8 +25,8 @@
         @Enumerated(EnumType.STRING)
         private RoleEnum role;
 
-        @Lob
-        private byte[] profileImage;
+
+        private String profileImage;
 
         private Collection<EventDTO> events;
 

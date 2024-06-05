@@ -34,9 +34,8 @@ public class UserEntity implements UserDetails {
     private String lastname;
     private LocalDate birthdate;
 
-    @Lob
     @Column(name = "profile_image")
-    private byte[] profileImage;
+    private String profileImage;
 
     @Enumerated(EnumType.STRING)
     private RoleEnum role;

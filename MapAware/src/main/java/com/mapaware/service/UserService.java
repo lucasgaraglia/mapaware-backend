@@ -5,7 +5,6 @@ import com.mapaware.model.dto.UserDTO;
 import com.mapaware.model.entity.EventEntity;
 import com.mapaware.model.entity.UserEntity;
 import com.mapaware.repository.IUserRepository;
-import com.mapaware.utils.ImageUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -61,7 +60,7 @@ public class UserService {
                 .birthdate(currentUser.getBirthdate())
                 .role(currentUser.getRole())
                 .events(eventDTOList)
-                .profileImage(ImageUtils.decompressImage(currentUser.getProfileImage()))
+                .profileImage(currentUser.getProfileImage())
                 .build();
     }
 
@@ -94,7 +93,7 @@ public class UserService {
                 .birthdate(currentUser.getBirthdate())
                 .role(currentUser.getRole())
                 .events(eventDTOList)
-                .profileImage(ImageUtils.decompressImage(currentUser.getProfileImage()))
+                .profileImage(currentUser.getProfileImage())
                 .build();
     }
 
@@ -110,9 +109,9 @@ public class UserService {
 
     }
 
-    public void saveUserProfileImage(Long userId, MultipartFile file) throws IOException {
+    public void saveUserProfileImage(Long userId, String profileImage) throws IOException {
         UserEntity user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-        user.setProfileImage(ImageUtils.compressImage(file.getBytes()) );
+        user.setProfileImage(profileImage);
         userRepository.save(user);
     }
 
