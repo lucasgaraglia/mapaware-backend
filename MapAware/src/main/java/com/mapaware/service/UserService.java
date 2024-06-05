@@ -109,10 +109,11 @@ public class UserService {
 
     }
 
-    public void saveUserProfileImage(Long userId, String profileImage) throws IOException {
-        UserEntity user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-        user.setProfileImage(profileImage);
-        userRepository.save(user);
+    public void saveUserProfileImage(String profileImage) throws IOException {
+        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserEntity currentUser = userRepository.findByUsername(currentUsername).orElseThrow(() -> new RuntimeException("User not found"));
+        currentUser.setProfileImage(profileImage);
+        userRepository.save(currentUser);
     }
 
 }

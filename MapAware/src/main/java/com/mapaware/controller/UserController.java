@@ -50,11 +50,11 @@ public class UserController {
 
     }
 
-    @PutMapping("/image/{id}")
+    @PutMapping("/image")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN', 'PRO')")
-    public ResponseEntity<String> uploadProfileImage(@RequestBody String profileImage, @PathVariable Long id) throws IOException {
+    public ResponseEntity<String> uploadProfileImage(@RequestBody String profileImage) throws IOException {
 
-            userService.saveUserProfileImage(id, profileImage);
+            userService.saveUserProfileImage(profileImage);
             return ResponseEntity.ok("File uploaded successfully");
 
 
