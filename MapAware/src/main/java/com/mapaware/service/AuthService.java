@@ -41,7 +41,7 @@ public class AuthService {
                 .lastname(request.getLastname())
                 .name(request.getName())
                 .birthdate(request.getBirthdate())
-                .profileImage("default-profile.png")
+                .profileImage(null)
                 .build();
 
         userRepository.save(user);
