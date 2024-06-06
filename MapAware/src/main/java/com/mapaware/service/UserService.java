@@ -1,6 +1,7 @@
 package com.mapaware.service;
 
 import com.mapaware.model.dto.EventDTO;
+import com.mapaware.model.dto.ProfileImageUploadRequest;
 import com.mapaware.model.dto.UserDTO;
 import com.mapaware.model.entity.EventEntity;
 import com.mapaware.model.entity.UserEntity;
@@ -109,10 +110,10 @@ public class UserService {
 
     }
 
-    public void saveUserProfileImage(String profileImage) throws IOException {
+    public void saveUserProfileImage(ProfileImageUploadRequest profileImage) throws IOException {
         String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         UserEntity currentUser = userRepository.findByUsername(currentUsername).orElseThrow(() -> new RuntimeException("User not found"));
-        currentUser.setProfileImage(profileImage);
+        currentUser.setProfileImage(profileImage.getPath());
         userRepository.save(currentUser);
     }
 
