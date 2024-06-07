@@ -138,19 +138,19 @@ public class UserService {
         String fileExtension = fileOriginalName.substring(fileOriginalName.lastIndexOf("."));
         String newFileName = fileName + fileExtension;
 
-        File folder = new File("src/main/resources/uploads");
+        File folder = new File("src/main/resources/static/uploads");
 
         if(!folder.exists()) {
             folder.mkdirs();
         }
 
-        Path filePath = Paths.get("src/main/resources/uploads/" + newFileName);
+        Path filePath = Paths.get("src/main/resources/static/uploads/" + newFileName);
         Files.write(filePath, bytes);
 
 
         String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         UserEntity currentUser = userRepository.findByUsername(currentUsername).orElseThrow(() -> new RuntimeException("User not found"));
-        currentUser.setProfileImage(filePath.toString());
+        currentUser.setProfileImage("/uploads/"+newFileName);
         userRepository.save(currentUser);
 
 
