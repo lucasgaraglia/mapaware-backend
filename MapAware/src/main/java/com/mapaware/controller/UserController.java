@@ -50,5 +50,12 @@ public class UserController {
 
     }
 
+    @GetMapping("/get-image")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN', 'PRO')")
+    public ResponseEntity<String> getProfileImage(){
+        return ResponseEntity.ok(userService.getCurrentUserProfileImage());
+    }
+
+
 
 }

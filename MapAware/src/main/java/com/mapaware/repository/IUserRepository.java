@@ -12,4 +12,7 @@ public interface IUserRepository extends JpaRepository<UserEntity, Long> {
 
     UserEntity save(UserEntity user);
 
+
+
+
 }
