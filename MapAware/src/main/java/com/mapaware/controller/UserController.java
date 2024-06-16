@@ -56,6 +56,12 @@ public class UserController {
         return ResponseEntity.ok(userService.getCurrentUserProfileImage());
     }
 
+    @DeleteMapping("/image")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN', 'PRO')")
+    public ResponseEntity<String> deleteProfileImage(){
+        return ResponseEntity.ok(userService.deleteCurrentUserProfileImage());
+    }
+
 
 
 }

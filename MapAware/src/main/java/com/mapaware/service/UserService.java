@@ -174,4 +174,12 @@ public class UserService {
         return currentUser.getProfileImage();
     }
 
+    public String deleteCurrentUserProfileImage(){
+        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserEntity currentUser = userRepository.findByUsername(currentUsername).orElseThrow(() -> new RuntimeException("User not found"));
+        currentUser.setProfileImage(null);
+        userRepository.save(currentUser);
+        return "Profile image deleted successfully";
+    }
+
 }
