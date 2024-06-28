@@ -9,8 +9,10 @@ import com.mapaware.model.entity.UserEntity;
 import com.mapaware.repository.IUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,12 +26,25 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
 
     public AuthResponse login(LoginRequest request) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
-        UserDetails user = userRepository.findByUsername(request.getUsername()).orElseThrow();
-        String token = jwtService.generateToken(user);
-        return AuthResponse.builder()
-                .token(token)
-                .build();
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
+            );
+            UserDetails user = userRepository.findByUsername(request.getUsername())
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+            String token = jwtService.generateToken(user);
+            return AuthResponse.builder()
+                    .token(token)
+                    .build();
+        } catch (BadCredentialsException e) {
+            return AuthResponse.builder()
+                    .token(null)
+                    .build();
+        } catch (UsernameNotFoundException e) {
+            return AuthResponse.builder()
+                    .token(null)
+                    .build();
+        }
     }
 
     public AuthResponse register(RegisterRequest request) {
